@@ -1,27 +1,26 @@
-import React from "react";
-import PlateCard from "./components/PlateCard.jsx"; 
-import "./App.css";
+import { Routes, Route } from "react-router-dom";
+
+import Layout from "./components/Layout";
+
+import Home from "./pages/Home";
+import Plates from "./pages/Plates";
+import PlateDetail from "./pages/PlateDetail";
+import Profile from "./pages/Profile";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 export default function App() {
-  const plates = [
-    { name: "coscos", price: 50, is_available: true },
-    { name: "tajine", price: 70, is_available: false },
-    { name: "bastila", price: 90, is_available: true },
-  ];
-
   return (
-     <div className="app">
-          <h1>menu</h1>
-      <div className="plate-list">
-        {plates.map((plate, index) => (
-          <PlateCard
-       key={index}
-             name={plate.name}
-              price={plate.price}
-            is_available={plate.is_available}
-          />
-        ))}
-      </div>
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="plates" element={<Plates />} />
+        <Route path="plates/:id" element={<PlateDetail />} />
+        <Route path="profile" element={<Profile />} />
+      </Route>
+
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+    </Routes>
   );
 }
