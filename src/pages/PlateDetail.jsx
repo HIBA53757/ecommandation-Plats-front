@@ -15,7 +15,7 @@ export default function PlateDetail() {
         setLoading(true);
         setError("");
 
-        const res = await api.get(`/plates/${id}`);
+        const res = await api.get(`/plats/${id}`);
         setPlate(res.data);
       } catch (err) {
         setError("Erreur: impossible de charger ce plat");

@@ -15,10 +15,14 @@ export default function Plates() {
         setLoading(true);
         setError("");
 
-        const res = await api.get("/plates");
-        setPlates(res.data);
+        const res = await api.get("/plats");
+
+        console.log("API RESPONSE:", res.data);
+
+        setPlates(res.data.data || res.data);
       } catch (err) {
-        setError("Impossible de charger les plats (API error)");
+        console.log("API ERROR:", err);
+        setError("Impossible de charger les plats");
       } finally {
         setLoading(false);
       }
@@ -28,7 +32,7 @@ export default function Plates() {
   }, []);
 
   const filtered = plates.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase())
+    ((p.name || p.nom || "")).toLowerCase().includes(search.toLowerCase())
   );
 
   if (loading) return <h2>Loading...</h2>;
@@ -49,7 +53,13 @@ export default function Plates() {
 
       <div className="plate-list">
         {filtered.map((p) => (
-          <PlateCard key={p.id} {...p} />
+          <PlateCard
+            key={p.id}
+            id={p.id}
+            name={p.name || p.nom}
+            price={p.price || p.prix}
+            is_available={p.is_available}
+          />
         ))}
       </div>
     </div>
