@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
       }
 
       try {
-        const res = await api.get("/me");
+        const res = await api.get("/profile");
         setUser(res.data);
       } catch (err) {
         setUser(null);
@@ -46,7 +46,7 @@ async function register(name, email, password) {
     email,
     password,
     password_confirmation: password,
-    role: "user", // 👈 ADD THIS
+    role: "user", 
   });
 
   setToken(data.token);
