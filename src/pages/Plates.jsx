@@ -15,10 +15,10 @@ export default function Plates() {
         setLoading(true);
         setError("");
 
-        const response = await api.get("/plates");
-        setPlates(response.data);
+        const res = await api.get("/plates");
+        setPlates(res.data);
       } catch (err) {
-        setError("Erreur : API inaccessible !");
+        setError("Impossible de charger les plats (API error)");
       } finally {
         setLoading(false);
       }
@@ -36,7 +36,7 @@ export default function Plates() {
 
   return (
     <div>
-      <h1>Liste des plats</h1>
+      <h1>Plats</h1>
 
       <input
         type="text"
@@ -45,7 +45,7 @@ export default function Plates() {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      {filtered.length === 0 && <p>Aucun plat trouvé.</p>}
+      {filtered.length === 0 && <p>Aucun plat trouvé</p>}
 
       <div className="plate-list">
         {filtered.map((p) => (

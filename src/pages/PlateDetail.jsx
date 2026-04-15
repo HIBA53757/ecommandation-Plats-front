@@ -15,10 +15,10 @@ export default function PlateDetail() {
         setLoading(true);
         setError("");
 
-        const response = await api.get(`/plates/${id}`);
-        setPlate(response.data);
+        const res = await api.get(`/plates/${id}`);
+        setPlate(res.data);
       } catch (err) {
-        setError("Erreur : Plat introuvable ou API inaccessible !");
+        setError("Erreur: impossible de charger ce plat");
       } finally {
         setLoading(false);
       }
@@ -29,22 +29,13 @@ export default function PlateDetail() {
 
   if (loading) return <h2>Loading...</h2>;
   if (error) return <h2>{error}</h2>;
+  if (!plate) return <h2>Plat introuvable</h2>;
 
   return (
     <div>
-      <h1>Détails du plat</h1>
-
+      <h1>Détail du plat</h1>
       <h2>{plate.name}</h2>
-      <p>Prix : {plate.price} MAD</p>
-
-      <p>
-        Statut :{" "}
-        {plate.is_available ? (
-          <span className="available">Disponible</span>
-        ) : (
-          <span className="not-available">Indisponible</span>
-        )}
-      </p>
+      <p>{plate.price} MAD</p>
     </div>
   );
 }
