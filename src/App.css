@@ -1,104 +1,164 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f2f2f2;
+/* Variables & Reset */
+:root {
+  --primary: #2d3436;
+  --accent: #0984e3;
+  --bg: #f5f6fa;
+  --white: #ffffff;
+  --text: #2d3436;
+  --error: #d63031;
+  --success: #00b894;
+  --border: #dfe6e9;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-.container {
-  padding: 20px;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* Layout */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+h1 { margin-bottom: 1.5rem; font-weight: 700; }
 
 /* Navbar */
 .navbar {
-  background: black;
-  color: white;
-  padding: 15px;
+  background: var(--primary);
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow);
 }
 
-.nav-links {
+.nav-links, .auth-links {
   display: flex;
-  gap: 15px;
+  gap: 1.5rem;
+  align-items: center;
 }
 
-.nav-item {
-  color: white;
+.navbar a {
+  color: #dfe6e9;
   text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s;
 }
 
-.nav-item.active {
-  text-decoration: underline;
-  font-weight: bold;
-}
+.navbar a:hover { color: var(--white); }
 
-/* Plates */
-.plate-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-.plate-card {
-  background: white;
-  border: 1px solid #ddd;
-  padding: 15px;
-  width: 200px;
-  border-radius: 10px;
-}
-
-.available {
-  color: green;
-  font-weight: bold;
-}
-
-.not-available {
-  color: gray;
-  font-weight: bold;
-}
-
-.details-btn {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 8px;
-  background: black;
-  color: white;
-  text-decoration: none;
+/* Buttons */
+button {
+  padding: 0.6rem 1.2rem;
   border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity 0.2s;
 }
 
-/* Forms */
-.form {
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.logout-btn { background: var(--error); color: white; }
+
+/* Forms (Login/Register) */
+.auth-form {
+  max-width: 400px;
+  margin: 4rem auto;
+  background: var(--white);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.auth-form h1 { text-align: center; font-size: 1.5rem; }
+
+input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+input:focus {
+  outline: 2px solid var(--accent);
+  border-color: transparent;
+}
+
+.auth-form button {
+  width: 100%;
+  background: var(--accent);
+  color: white;
+  font-size: 1rem;
+}
+
+/* Plates Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.card {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  width: 300px;
+  gap: 0.5rem;
 }
 
-.form input {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+.card h3 { font-size: 1.2rem; }
+
+.price { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 4px;
+  width: fit-content;
 }
 
-.form button {
-  padding: 10px;
-  border: none;
-  background: black;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
+.badge.available { background: #e3fcef; color: #00875a; }
+.badge.unavailable { background: #ffebe6; color: #bf2600; }
+
+/* Feedback */
 .error {
-  color: red;
-  font-weight: bold;
+  color: var(--error);
+  background: #fff5f5;
+  padding: 0.8rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  border: 1px solid #fab1a0;
 }
 
-.logout-btn {
-  padding: 6px 10px;
-  border: none;
-  cursor: pointer;
-  border-radius: 6px;
+.loader {
+  text-align: center;
+  padding: 4rem;
+  font-weight: 600;
+  color: var(--accent);
 }

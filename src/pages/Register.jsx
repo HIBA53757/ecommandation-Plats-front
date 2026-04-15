@@ -1,73 +1,64 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
 export default function Register() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: ""
+  });
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const { register } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
-
     try {
-      setLoading(true);
-      setError("");
-
-      await register(name, email, password);
-
+      await api.post("/register", formData);
+      await login(formData.email, formData.password);
       navigate("/plates");
     } catch (err) {
-  console.log("ERROR:", err);
-
-  const message =
-    err.response?.data?.message ||
-    Object.values(err.response?.data?.errors || {})?.[0]?.[0] ||
-    "Erreur lors de l'inscription";
-
-  setError(message);
-}finally {
-      setLoading(false);
+      setError("Erreur lors de l'inscription. Vérifiez vos informations.");
     }
   }
 
   return (
-    <div>
-      <h1>Register</h1>
-
+    <div className="auth-form">
+      <h1>Inscription</h1>
       {error && <p className="error">{error}</p>}
-
-      <form className="form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+      <form onSubmit={handleSubmit}>
+        <input 
+          type="text" 
+          placeholder="Nom" 
+          value={formData.name} 
+          onChange={e => setFormData({...formData, name: e.target.value})} 
+          required 
         />
-
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+        <input 
+          type="email" 
+          placeholder="Email" 
+          value={formData.email} 
+          onChange={e => setFormData({...formData, email: e.target.value})} 
+          required 
         />
-
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+        <input 
+          type="password" 
+          placeholder="Mot de passe" 
+          value={formData.password} 
+          onChange={e => setFormData({...formData, password: e.target.value})} 
+          required 
         />
-
-        <button disabled={loading}>
-          {loading ? "Loading..." : "Register"}
-        </button>
+        <input 
+          type="password" 
+          placeholder="Confirmer le mot de passe" 
+          value={formData.password_confirmation} 
+          onChange={e => setFormData({...formData, password_confirmation: e.target.value})} 
+          required 
+        />
+        <button type="submit">S'inscrire</button>
       </form>
     </div>
   );

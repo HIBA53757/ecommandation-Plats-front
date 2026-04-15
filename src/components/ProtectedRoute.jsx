@@ -4,11 +4,8 @@ import { useAuth } from "../context/AuthContext";
 export default function ProtectedRoute({ children }) {
   const { token, loadingAuth } = useAuth();
 
-  if (loadingAuth) return <h2>Loading...</h2>;
-
-  if (!token) {
-    return <Navigate to="/login" />;
-  }
+  if (loadingAuth) return <div className="loader">Chargement...</div>;
+  if (!token) return <Navigate to="/login" />;
 
   return children;
 }

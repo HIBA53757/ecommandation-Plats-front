@@ -8,17 +8,17 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [loadingAuth, setLoadingAuth] = useState(true);
 
-  // Load user if token exists
   useEffect(() => {
     async function fetchUser() {
       if (!token) {
         setLoadingAuth(false);
         return;
       }
-
       try {
         const res = await api.get("/profile");
-        setUser(res.data);
+        console.log("Profile API Raw Response:", res.data);
+        const userData = res.data?.data || res.data?.user || res.data;
+        setUser(userData);
       } catch (err) {
         setUser(null);
         setToken(null);
@@ -27,45 +27,33 @@ export function AuthProvider({ children }) {
         setLoadingAuth(false);
       }
     }
-
     fetchUser();
   }, [token]);
 
   async function login(email, password) {
-    const { data } = await api.post("/login", { email, password });
+    const res = await api.post("/login", { email, password });
+    const data = res.data;
+    const receivedToken = data.token || data.access_token || data.data?.token;
+    const receivedUser = data.user || data.data?.user || data;
 
-    setToken(data.token);
-    localStorage.setItem("token", data.token);
-
-    setUser(data.user);
+    if (receivedToken) {
+      localStorage.setItem("token", receivedToken);
+      setToken(receivedToken);
+      setUser(receivedUser);
+    }
   }
 
-async function register(name, email, password) {
-  const { data } = await api.post("/register", {
-    name,
-    email,
-    password,
-    password_confirmation: password,
-    role: "user", 
-  });
-
-  setToken(data.token);
-  setUser(data.user);
-  localStorage.setItem("token", data.token);
-}
-
   async function logout() {
-    await api.post("/logout");
-
+    try {
+      await api.post("/logout");
+    } catch (e) {}
     setUser(null);
     setToken(null);
     localStorage.removeItem("token");
   }
 
   return (
-    <AuthContext.Provider
-      value={{ user, token, login, logout, register, loadingAuth }}
-    >
+    <AuthContext.Provider value={{ user, token, login, logout, loadingAuth }}>
       {children}
     </AuthContext.Provider>
   );

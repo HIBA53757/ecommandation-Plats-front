@@ -1,51 +1,31 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
   const { user, token, logout } = useAuth();
   const navigate = useNavigate();
 
-  async function handleLogout() {
+  const handleLogout = async () => {
     await logout();
     navigate("/login");
-  }
+  };
 
   return (
     <nav className="navbar">
-      <h2>FoodApp</h2>
-
       <div className="nav-links">
-        <NavLink to="/" className="nav-item">
-          Home
-        </NavLink>
-
-        <NavLink to="/plates" className="nav-item">
-          Plates
-        </NavLink>
-
-        <NavLink to="/profile" className="nav-item">
-          Profile
-        </NavLink>
-
-        {!token ? (
+        <Link to="/">Accueil</Link>
+        <Link to="/plates">Plats</Link>
+      </div>
+      <div className="auth-links">
+        {token ? (
           <>
-            <NavLink to="/login" className="nav-item">
-              Login
-            </NavLink>
-
-            <NavLink to="/register" className="nav-item">
-              Register
-            </NavLink>
+            <Link to="/profile">Profil ({user?.name})</Link>
+            <button onClick={handleLogout} className="logout-btn">Déconnexion</button>
           </>
         ) : (
           <>
-            <span className="user-name">
-              {user ? user.name : "User"}
-            </span>
-
-            <button className="logout-btn" onClick={handleLogout}>
-              Logout
-            </button>
+            <Link to="/login">Connexion</Link>
+            <Link to="/register">Inscription</Link>
           </>
         )}
       </div>
