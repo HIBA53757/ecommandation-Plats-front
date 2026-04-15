@@ -40,14 +40,19 @@ export function AuthProvider({ children }) {
     setUser(data.user);
   }
 
-  async function register(name, email, password) {
-    const { data } = await api.post("/register", { name, email, password });
+async function register(name, email, password) {
+  const { data } = await api.post("/register", {
+    name,
+    email,
+    password,
+    password_confirmation: password,
+    role: "user", // 👈 ADD THIS
+  });
 
-    setToken(data.token);
-    localStorage.setItem("token", data.token);
-
-    setUser(data.user);
-  }
+  setToken(data.token);
+  setUser(data.user);
+  localStorage.setItem("token", data.token);
+}
 
   async function logout() {
     await api.post("/logout");

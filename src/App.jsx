@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
 import Layout from "./components/Layout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import Home from "./pages/Home";
 import Plates from "./pages/Plates";
@@ -16,7 +17,15 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="plates" element={<Plates />} />
         <Route path="plates/:id" element={<PlateDetail />} />
-        <Route path="profile" element={<Profile />} />
+
+        <Route
+          path="profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
       </Route>
 
       <Route path="/login" element={<Login />} />

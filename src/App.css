@@ -91,3 +91,14 @@ body {
   border-radius: 6px;
   cursor: pointer;
 }
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+.logout-btn {
+  padding: 6px 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
